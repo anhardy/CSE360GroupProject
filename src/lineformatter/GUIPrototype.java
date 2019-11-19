@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lineformatter;
 import javax.swing.JFileChooser;
 import java.io.File;
 
 /**
- *
+ * This class is a simple GUI for loading files for formatting, then saving the
+ * formatted file.
  * @author ahard
  */
 public class GUIPrototype extends javax.swing.JFrame {

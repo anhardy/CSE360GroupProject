@@ -1,22 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lineformatter;
 import java.io.File;
 
 /**
- *
+ * Adam Hardy
+ * ADD YOUR NAMES HERE
+ * CSE360-85141
+ * Assignment 1
+ * This class is intended to format a text file based on commands within the
+ * given file.
  * @author ahard
  */
 public class LineFormatter {
-    File load (File file) {
+    /**
+     * Method for loading a file from the JFileChooser in the GUI
+     * @param file is the file to be loaded
+     * @return returns the file for use in other methods
+     */
+    public File load (File file) {
         return file;
     }
-    void save (File file) {
+    /**
+     * Method for saving a file from the JFileChooser in the GUI
+     * @param file is the file to be saved
+     */
+    public void save (File file) {
         
     }
+    
+    
 
    
     
