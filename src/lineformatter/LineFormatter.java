@@ -11,12 +11,28 @@ import java.io.*;
  * @author ahard
  */
 public class LineFormatter {
+    private int maxChars = 80;
+    private char justfication = 'l';
+    private boolean equalSpacing = false;
+    private boolean wrap = false;
+    private int lineSpacing = 1;
+    private boolean title = false;
+    private int paragraphSpacing = 0;
+    private int blankLines = 0;
+    private int columns = 1;
+    
     /**
      * Method for saving a file from the JFileChooser in the GUI
      * @param file is the file to be saved
      */
     public void save (File file) {
         
+    }
+    
+    public String formatCharCount(String line) {
+        
+        
+        return line;
     }
     
     /**
@@ -31,9 +47,10 @@ public class LineFormatter {
             
             line = readFile.readLine();
             while(line != null) {
-                //Code and method calls for formatting goes here
+                //Code and method calls for formatting goes here             
                 line = readFile.readLine();
             }
+            readFile.close();
         } catch(FileNotFoundException fileNotFound) {
             
         } catch(IOException ioException) {
