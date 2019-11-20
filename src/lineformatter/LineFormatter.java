@@ -1,5 +1,5 @@
 package lineformatter;
-import java.io.File;
+import java.io.*;
 
 /**
  * Adam Hardy
@@ -12,18 +12,33 @@ import java.io.File;
  */
 public class LineFormatter {
     /**
-     * Method for loading a file from the JFileChooser in the GUI
-     * @param file is the file to be loaded
-     * @return returns the file for use in other methods
-     */
-    public File load (File file) {
-        return file;
-    }
-    /**
      * Method for saving a file from the JFileChooser in the GUI
      * @param file is the file to be saved
      */
     public void save (File file) {
+        
+    }
+    
+    /**
+     * Method for reading and formatting a file
+     * @param file is the file to be read and formatted
+     */
+    public void format(File file) {
+        String line;
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader readFile = new BufferedReader(fileReader);
+            
+            line = readFile.readLine();
+            while(line != null) {
+                //Code and method calls for formatting goes here
+                line = readFile.readLine();
+            }
+        } catch(FileNotFoundException fileNotFound) {
+            
+        } catch(IOException ioException) {
+            
+        }
         
     }
     

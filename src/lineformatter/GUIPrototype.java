@@ -135,7 +135,7 @@ public class GUIPrototype extends javax.swing.JFrame {
         int response = fileChooser.showOpenDialog(null);
         if(response == JFileChooser.APPROVE_OPTION) {
             File loadedFile = fileChooser.getSelectedFile();
-            formatter.load(loadedFile);
+            formatter.format(loadedFile);
         }
     }//GEN-LAST:event_jButtonLoadMouseClicked
 
