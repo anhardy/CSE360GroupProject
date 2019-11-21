@@ -46,6 +46,7 @@ public class LineFormatter {
             BufferedReader readFile = new BufferedReader(fileReader);
             
             line = readFile.readLine();
+            
             while(line != null) {
                 //Code and method calls for formatting goes here   
                 if(line.charAt(0)== '-') {
