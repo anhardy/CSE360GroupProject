@@ -5,7 +5,7 @@ import java.io.*;
  * Adam Hardy
  * ADD YOUR NAMES HERE
  * CSE360-85141
- * Assignment 1
+ * Team Project
  * This class is intended to format a text file based on commands within the
  * given file.
  * @author ahard
@@ -28,7 +28,11 @@ public class LineFormatter {
     public void save (File file) {
         
     }
-    
+    /**
+     * Method for formatting a line based on commands given
+     * @param line is the line to be formatted
+     * @return 
+     */
     public String formatLine(String line) {
         
         
@@ -36,7 +40,10 @@ public class LineFormatter {
     }
     
     /**
-     * Method for reading and formatting a file
+     * Method for reading and formatting a file. It will continue to read and 
+     * parse commands until a non-command line has been read, at which point the
+     * line will be formatted based on these commands. This process will repeat
+     * for each line and commands until the end of the file.
      * @param file is the file to be read and formatted
      */
     public void format(File file) {
