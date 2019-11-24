@@ -143,6 +143,7 @@ public class GUIPrototype extends javax.swing.JFrame {
             formattedLines = formatter.getFormattedLines();
             for(int i = 0; i < errors.size(); i++) {
                 jErrors.append(errors.get(i));
+                jErrors.append("\n");
             }
              for(int i = 0; i < formattedLines.size(); i++) {
                 jDisplay.append(formattedLines.get(i));

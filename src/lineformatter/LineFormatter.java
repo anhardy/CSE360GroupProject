@@ -76,7 +76,8 @@ public class LineFormatter {
     }
     /**
      * This method adds in a number of spaces before a line based on
-     * a given count from a pargraph command
+     * a given count from a paragraph command. Paragraph spacing is reset to 0
+     * until next paragraph command given
      * @param line is the line be made into a paragraph
      * @return 
      */
@@ -88,7 +89,7 @@ public class LineFormatter {
         spacing += line;
         line = spacing;
         
-        
+        paragraphSpacing = 0;
         return line;
     }
     /**
@@ -220,6 +221,8 @@ public class LineFormatter {
                     }
                 } else if(line.length() > 0) {
                     formatLine(line);
+                } else {
+                    formattedLines.add("");
                 }
                 line = readFile.readLine();
             }
