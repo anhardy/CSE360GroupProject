@@ -147,7 +147,9 @@ public class GUIPrototype extends javax.swing.JFrame {
             }
              for(int i = 0; i < formattedLines.size(); i++) {
                 jDisplay.append(formattedLines.get(i));
-                jDisplay.append("\n");
+                if(formattedLines.get(i) != "\n") {
+                    jDisplay.append("\n");
+                }
             }
         }
     }//GEN-LAST:event_jButtonLoadMouseClicked
