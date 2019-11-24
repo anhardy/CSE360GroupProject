@@ -31,6 +31,10 @@ public class LineFormatter {
     public void save (File file) {
         
     }
+    /**
+     * Method for adding number of blank lines specified by command, then 
+     * resetting blank line count to 0 until next blank line command read
+     */
     public void addBlankLines() {
         for(int currentCount = 0 ; currentCount < blankLines; currentCount++) {
             formattedLines.add("\n");
@@ -38,6 +42,16 @@ public class LineFormatter {
         blankLines = 0;
         
     }
+    
+    /**
+     * This method takes in a line and checks if its length is greater than
+     * the maximum characters. If it is, it decrements from the max character
+     * length until a space is reached, so as not to split in the middle of a 
+     * word. The first substring is added to the arraylist of formatted lines.
+     * If the second string is not empty, the method is recursively called, with
+     * the remaining string being passed in.
+     * @param line is the line to be formatted
+     */
     public void formatLineCount(String line) {
         int endLine = maxChars;
         String formatted;
@@ -60,6 +74,12 @@ public class LineFormatter {
         
         
     }
+    /**
+     * This method adds in a number of spaces before a line based on
+     * a given count from a pargraph command
+     * @param line is the line be made into a paragraph
+     * @return 
+     */
     public String formatParagraph(String line) {
         String spacing = "";
         for(int spacingCount = 0; spacingCount < paragraphSpacing; spacingCount++){
@@ -88,12 +108,18 @@ public class LineFormatter {
         
        
     }
-    
+    /**
+     * Accessor method for accessing list of formatted lines
+     * @return the list of formatted lines
+     */
     public ArrayList getFormattedLines() {
         
         return formattedLines;
     }
-    
+    /**
+     * Accessor method for accessing list of errors
+     * @return the list of errors
+     */
     public ArrayList getErrors() {
         
         return errors;
