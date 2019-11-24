@@ -1,6 +1,7 @@
 package lineformatter;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This class is a simple GUI for loading files for formatting, then saving the
@@ -134,8 +135,19 @@ public class GUIPrototype extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         int response = fileChooser.showOpenDialog(null);
         if(response == JFileChooser.APPROVE_OPTION) {
+            ArrayList<String> errors = new ArrayList<>();
+            ArrayList<String> formattedLines = new ArrayList<>();
             File loadedFile = fileChooser.getSelectedFile();
             formatter.format(loadedFile);
+            errors = formatter.getErrors();
+            formattedLines = formatter.getFormattedLines();
+            for(int i = 0; i < errors.size(); i++) {
+                jErrors.append(errors.get(i));
+            }
+             for(int i = 0; i < formattedLines.size(); i++) {
+                jDisplay.append(formattedLines.get(i));
+                jDisplay.append("\n");
+            }
         }
     }//GEN-LAST:event_jButtonLoadMouseClicked
 
@@ -186,10 +198,10 @@ public class GUIPrototype extends javax.swing.JFrame {
     private javax.swing.JButton jButtonExit;
     private javax.swing.JButton jButtonLoad;
     private javax.swing.JButton jButtonSave;
-    private javax.swing.JTextArea jDisplay;
+    protected javax.swing.JTextArea jDisplay;
     private javax.swing.JLabel jDisplayLabel;
     private javax.swing.JLabel jErrorLabel;
-    private javax.swing.JTextArea jErrors;
+    protected javax.swing.JTextArea jErrors;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

@@ -1,5 +1,6 @@
 package lineformatter;
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Adam Hardy
@@ -11,6 +12,8 @@ import java.io.*;
  * @author ahard
  */
 public class LineFormatter {
+    private ArrayList<String> errors = new ArrayList<>();
+    private ArrayList<String> formattedLines = new ArrayList<>();
     private int maxChars = 80;
     private char justification = 'l';
     private boolean equalSpacing = false;
@@ -28,15 +31,72 @@ public class LineFormatter {
     public void save (File file) {
         
     }
+    public void addBlankLines() {
+        for(int currentCount = 0 ; currentCount < blankLines; currentCount++) {
+            formattedLines.add("\n");
+        }
+        blankLines = 0;
+        
+    }
+    public void formatLineCount(String line) {
+        int endLine = maxChars;
+        String formatted;
+        String remainder;
+        if(line.length() > maxChars) {
+            while(line.charAt(endLine) != ' ') {
+                endLine--;
+            }
+            formatted = line.substring(0, endLine);
+            remainder = line.substring(endLine+1);
+            if(!remainder.isEmpty()) {
+                formattedLines.add(formatted);
+                formatLineCount(remainder);
+            }
+        } else {
+            formatted = line;
+            formattedLines.add(formatted);
+        }
+        
+        
+        
+    }
+    public String formatParagraph(String line) {
+        String spacing = "";
+        for(int spacingCount = 0; spacingCount < paragraphSpacing; spacingCount++){
+            spacing += " ";
+        }
+        spacing += line;
+        line = spacing;
+        
+        
+        return line;
+    }
     /**
      * Method for formatting a line based on commands given
      * @param line is the line to be formatted
      * @return 
      */
-    public String formatLine(String line) {
+    public void formatLine(String line) {
+        if(justification == 'l' && equalSpacing == false && title == false) {
+            if(paragraphSpacing > 0) {
+                line = formatParagraph(line);
+            }
+        }
+        if(columns == 1) {
+            formatLineCount(line);
+        }
         
+       
+    }
+    
+    public ArrayList getFormattedLines() {
         
-        return line;
+        return formattedLines;
+    }
+    
+    public ArrayList getErrors() {
+        
+        return errors;
     }
     
     /**
@@ -48,6 +108,7 @@ public class LineFormatter {
      */
     public void format(File file) {
         String line;
+        int lineCount = 0;
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader readFile = new BufferedReader(fileReader);
@@ -55,8 +116,9 @@ public class LineFormatter {
             line = readFile.readLine();
             
             while(line != null) {
-                //Code and method calls for formatting goes here   
-                if(line.charAt(0)== '-') {
+                //Code and method calls for formatting goes here
+                lineCount++;
+                if(line.length() > 0 && line.charAt(0) == '-') {
                     if(line.charAt(1) == 'n') {
                         String remainingCommand = line.substring(2);
                         try {
@@ -64,10 +126,10 @@ public class LineFormatter {
                               if(commandCount > 0) {
                                   maxChars = commandCount;
                               } else {
-                                  //Code to print error to error display
+                                 errors.add("Line " + lineCount + " error: Maximum line length must be greater than 0");
                               }
                         } catch(NumberFormatException exception) {
-                            //Code to print error to error display
+                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
                         }
                       
                     } else if (line.charAt(1) == 'r') {
@@ -84,7 +146,7 @@ public class LineFormatter {
                         } else if(line.charAt(2) == '-') {
                             wrap = false;
                         } else {
-                            //Code to print error to error display
+                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
                         }
                     } else if (line.charAt(1) == 's') {
                         lineSpacing = 1;
@@ -99,10 +161,10 @@ public class LineFormatter {
                               if(commandCount > 0) {
                                   paragraphSpacing = commandCount;
                               } else {
-                                  //Code to print error to error display
+                                  errors.add("Line " + lineCount + " error: Paragraph spacing must be greater than 0");
                               }
                         } catch(NumberFormatException exception) {
-                            //Code to print error to error display
+                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                         }
                     } else if (line.charAt(1) == 'b') {
                         String remainingCommand = line.substring(2);
@@ -110,11 +172,12 @@ public class LineFormatter {
                             int commandCount = Integer.parseInt(remainingCommand);
                               if(commandCount > 0) {
                                   blankLines = commandCount;
+                                  addBlankLines();
                               } else {
-                                  //Code to print error to error display
+                                  errors.add("Line " + lineCount + " error: Blank lines must be greater than 0");
                               }
                         } catch(NumberFormatException exception) {
-                            //Code to print error to error display
+                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                         }
                     } else if (line.charAt(1) == 'a') {
                         String remainingCommand = line.substring(2);
@@ -123,13 +186,13 @@ public class LineFormatter {
                               if(commandCount == 2 || commandCount == 1) {
                                   columns = commandCount;
                               } else {
-                                  //Code to print error to error display
+                                  errors.add("Line " + lineCount + " error: Invalid column count. Column count can be 1 or 2");
                               }
                         } catch(NumberFormatException exception) {
-                            //Code to print error to error display
+                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                         }
                     }
-                } else {
+                } else if(line.length() > 0) {
                     formatLine(line);
                 }
                 line = readFile.readLine();
