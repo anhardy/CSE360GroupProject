@@ -23,8 +23,8 @@ public class LineFormatter {
     private int paragraphSpacing = 0;
     private int blankLines = 0;
     private int columns = 1;
-    private int countStartIndex;
-    private int countEndIndex;
+    private int countStartIndex; //Beginning of current "block" in array list
+    private int countEndIndex; //End of current "block" in array list
     
     /**
      * Method for saving a file from the JFileChooser in the GUI
@@ -93,7 +93,7 @@ public class LineFormatter {
             formattedLines.add(formatted);
             
         }
-        countEndIndex++;
+        countEndIndex++; //Every line added increases the end of current block
         
         
         
@@ -250,7 +250,7 @@ public class LineFormatter {
                 } else if(line.length() > 0) {
                     formatLine(line);
                 } else {
-                    formattedLines.add("\n");
+                    formattedLines.add("\n"); //New line moves entire block
                     countStartIndex++;
                     countEndIndex++;
                 }
