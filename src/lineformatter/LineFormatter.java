@@ -23,6 +23,8 @@ public class LineFormatter {
     private int paragraphSpacing = 0;
     private int blankLines = 0;
     private int columns = 1;
+    private int countStartIndex;
+    private int countEndIndex;
     
     /**
      * Method for saving a file from the JFileChooser in the GUI
@@ -38,11 +40,31 @@ public class LineFormatter {
     public void addBlankLines() {
         for(int currentCount = 0 ; currentCount < blankLines; currentCount++) {
             formattedLines.add("\n");
+            countStartIndex++;
+            countEndIndex++;
         }
         blankLines = 0;
         
     }
     
+    public void formatJustification() {
+        String spacing;
+        String line;
+        int spaceBuffer = 0;
+        for (int index = countStartIndex; index < countEndIndex; index++) {
+            spacing = "";
+            line = formattedLines.get(index);
+            if (justification == 'r') {
+                spaceBuffer = maxChars - line.length();
+                for (int spacingCount = 0; spacingCount < spaceBuffer; spacingCount++) {
+                    spacing += " ";
+                }
+                spacing += line;
+                line = spacing;
+            }
+            formattedLines.set(index, line);
+        }
+    }
     /**
      * This method takes in a line and checks if its length is greater than
      * the maximum characters. If it is, it decrements from the max character
@@ -63,13 +85,15 @@ public class LineFormatter {
             formatted = line.substring(0, endLine);
             remainder = line.substring(endLine+1);
             if(!remainder.isEmpty()) {
-                formattedLines.add(formatted);
+                formattedLines.add(formatted );
                 formatLineCount(remainder);
             }
         } else {
             formatted = line;
             formattedLines.add(formatted);
+            
         }
+        countEndIndex++;
         
         
         
@@ -87,7 +111,7 @@ public class LineFormatter {
             spacing += " ";
         }
         spacing += line;
-        line = spacing;
+        line = spacing+ "\n";
         
         paragraphSpacing = 0;
         return line;
@@ -104,7 +128,11 @@ public class LineFormatter {
             }
         }
         if(columns == 1) {
+            countStartIndex = formattedLines.size();
             formatLineCount(line);
+        }
+        if(justification != 'l' && title == false && equalSpacing == false) {
+            formatJustification();
         }
         
        
@@ -222,7 +250,9 @@ public class LineFormatter {
                 } else if(line.length() > 0) {
                     formatLine(line);
                 } else {
-                    formattedLines.add("");
+                    formattedLines.add("\n");
+                    countStartIndex++;
+                    countEndIndex++;
                 }
                 line = readFile.readLine();
             }
