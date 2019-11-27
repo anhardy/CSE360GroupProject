@@ -47,23 +47,49 @@ public class LineFormatter {
         
     }
     
+    /**
+     * Method for formatting line justification of lines already formatted
+     * for line count. Creates two character arrays, one filled with as many
+     * spaces as the maximum character count, and the other created from the
+     * line to be formatted. This allows the a formatted String to be 
+     * dynamically built from the point of justification: left to right
+     * for left, middle out for centered, and right to left for right.
+     */
     public void formatJustification() {
-        String spacing;
+        char[] formatted = new char[maxChars];
         String line;
-        int spaceBuffer = 0;
-        for (int index = countStartIndex; index < countEndIndex; index++) {
-            spacing = "";
-            line = formattedLines.get(index);
-            if (justification == 'r') {
-                spaceBuffer = maxChars - line.length();
-                for (int spacingCount = 0; spacingCount < spaceBuffer; spacingCount++) {
-                    spacing += " ";
-                }
-                spacing += line;
-                line = spacing;
-            }
-            formattedLines.set(index, line);
+        char[] charLine; 
+        for(int blankCount = 0; blankCount < maxChars; blankCount++) {
+            formatted[blankCount] = ' ';
         }
+         for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
+            charLine = formattedLines.get(formattedIndex).toCharArray();;
+            if (justification == 'r') {
+                for(int i = charLine.length-1, j = maxChars-1; i >= 0; i--, j--) {
+                    formatted[j] = charLine[i];
+                }
+                line = String.copyValueOf(formatted);
+                formattedLines.set(formattedIndex, line);
+            }
+            else if(justification == 'c') {
+                int midpointOriginal = (charLine.length-1)/2;
+                int midpointFormatted = (maxChars-1)/2;
+                for(int rightOriginal = midpointOriginal+1, rightFormatted = midpointFormatted+1; 
+                        rightOriginal < charLine.length; rightOriginal++, rightFormatted++) {
+                    formatted[rightFormatted] = charLine[rightOriginal];
+                                        
+                }
+                 for(int leftOriginal = midpointOriginal, leftFormatted = midpointFormatted; 
+                        leftOriginal >= 0; leftOriginal--, leftFormatted--) {
+                    formatted[leftFormatted] = charLine[leftOriginal];
+                                        
+                }
+                line = String.copyValueOf(formatted);
+                formattedLines.set(formattedIndex, line);
+            }
+           
+        }
+        
     }
     /**
      * This method takes in a line and checks if its length is greater than
@@ -131,7 +157,7 @@ public class LineFormatter {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
         }
-        if(justification != 'l' && title == false && equalSpacing == false) {
+        if(title == false && equalSpacing == false) {
             formatJustification();
         }
         
