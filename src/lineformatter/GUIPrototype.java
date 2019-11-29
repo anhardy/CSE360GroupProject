@@ -135,6 +135,10 @@ public class GUIPrototype extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         int response = fileChooser.showOpenDialog(null);
         if(response == JFileChooser.APPROVE_OPTION) {
+            formatter.clearErrors();
+            formatter.clearFormattedLines();
+            jDisplay.setText("");
+            jErrors.setText("");
             ArrayList<String> errors = new ArrayList<>();
             ArrayList<String> formattedLines = new ArrayList<>();
             File loadedFile = fileChooser.getSelectedFile();
@@ -147,9 +151,6 @@ public class GUIPrototype extends javax.swing.JFrame {
             }
              for(int i = 0; i < formattedLines.size(); i++) {
                 jDisplay.append(formattedLines.get(i));
-                if(formattedLines.get(i) != "\n") {
-                    jDisplay.append("\n");
-                }
             }
         }
     }//GEN-LAST:event_jButtonLoadMouseClicked

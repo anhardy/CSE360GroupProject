@@ -26,12 +26,36 @@ public class LineFormatter {
     private int countStartIndex; //Beginning of current "block" in array list
     private int countEndIndex; //End of current "block" in array list
     
+   /**
+    * Finalizes formatting by ensuring all lines have a newline character
+    */ 
+    public void finalizeFormatting() {
+        String line;
+        for(int i = 0; i < formattedLines.size(); i++) {
+            line = formattedLines.get(i);
+            if(!line.contains("\n")) {
+                line += "\n";
+                formattedLines.set(i, line);
+            }
+        }
+    }
     /**
      * Method for saving a file from the JFileChooser in the GUI
      * @param file is the file to be saved
      */
     public void save (File file) {
-        
+        try {
+            FileWriter fWriter= new FileWriter(file);
+            BufferedWriter bWriter = new BufferedWriter(fWriter);
+            PrintWriter outFile = new PrintWriter(bWriter);
+            for(int i = 0; i < formattedLines.size(); i++) {
+                outFile.print(formattedLines.get(i));
+            }
+            outFile.close();
+            
+        } catch (IOException ex) {
+            errors.add("Error: Invalid File. File could not be written");
+        }
     }
     /**
      * Method for adding number of blank lines specified by command, then 
@@ -57,40 +81,76 @@ public class LineFormatter {
      */
     public void formatJustification() {
         char[] formatted = new char[maxChars];
-        String line;
         char[] charLine; 
-        for(int blankCount = 0; blankCount < maxChars; blankCount++) {
-            formatted[blankCount] = ' ';
-        }
-         for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
+        String line;
+        for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
+            for (int blankCount = 0; blankCount < maxChars; blankCount++) {
+                formatted[blankCount] = ' ';
+            }
             charLine = formattedLines.get(formattedIndex).toCharArray();;
             if (justification == 'r') {
-                for(int i = charLine.length-1, j = maxChars-1; i >= 0; i--, j--) {
+                for (int i = charLine.length - 1, j = maxChars - 1; i >= 0; i--, j--) {
                     formatted[j] = charLine[i];
                 }
                 line = String.copyValueOf(formatted);
                 formattedLines.set(formattedIndex, line);
-            }
-            else if(justification == 'c') {
-                int midpointOriginal = (charLine.length-1)/2;
-                int midpointFormatted = (maxChars-1)/2;
-                for(int rightOriginal = midpointOriginal+1, rightFormatted = midpointFormatted+1; 
+            } else if (justification == 'c') {
+                int midpointOriginal = (charLine.length - 1) / 2;
+                int midpointFormatted = (maxChars - 1) / 2;
+                for (int rightOriginal = midpointOriginal + 1, rightFormatted = midpointFormatted + 1;
                         rightOriginal < charLine.length; rightOriginal++, rightFormatted++) {
                     formatted[rightFormatted] = charLine[rightOriginal];
-                                        
+
                 }
-                 for(int leftOriginal = midpointOriginal, leftFormatted = midpointFormatted; 
+                for (int leftOriginal = midpointOriginal, leftFormatted = midpointFormatted;
                         leftOriginal >= 0; leftOriginal--, leftFormatted--) {
                     formatted[leftFormatted] = charLine[leftOriginal];
-                                        
+
                 }
                 line = String.copyValueOf(formatted);
                 formattedLines.set(formattedIndex, line);
             }
-           
+
         }
         
     }
+    /**
+     * Using the same logic as center justification, a title formatted by 
+     * building a character array outward from the middle. Title only formats
+     * the line after the command.
+     */
+    public void formatTitle() {
+        char[] formatted = new char[maxChars];
+        char[] charLine;
+        String line;
+        String underline = "";
+        for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
+            for (int blankCount = 0; blankCount < maxChars; blankCount++) {
+                formatted[blankCount] = ' ';
+            }
+            charLine = formattedLines.get(formattedIndex).toCharArray();
+            int midpointOriginal = (charLine.length - 1) / 2;
+            int midpointFormatted = (maxChars - 1) / 2;
+            for (int rightOriginal = midpointOriginal + 1, rightFormatted = midpointFormatted + 1;
+                    rightOriginal < charLine.length; rightOriginal++, rightFormatted++) {
+                formatted[rightFormatted] = charLine[rightOriginal];
+
+            }
+            for (int leftOriginal = midpointOriginal, leftFormatted = midpointFormatted;
+                    leftOriginal >= 0; leftOriginal--, leftFormatted--) {
+                formatted[leftFormatted] = charLine[leftOriginal];
+
+            }
+            line = String.copyValueOf(formatted);
+            formattedLines.set(formattedIndex, line + "\n");
+        }
+        for (int i = 0; i < maxChars; i++) {
+            underline += "-";
+        }
+        formattedLines.add(underline);
+        title = false;
+    }
+    
     /**
      * This method takes in a line and checks if its length is greater than
      * the maximum characters. If it is, it decrements from the max character
@@ -148,6 +208,7 @@ public class LineFormatter {
      * @return 
      */
     public void formatLine(String line) {
+        line = line.trim();
         if(justification == 'l' && equalSpacing == false && title == false) {
             if(paragraphSpacing > 0) {
                 line = formatParagraph(line);
@@ -157,8 +218,12 @@ public class LineFormatter {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
         }
-        if(title == false && equalSpacing == false) {
+        if(justification != 'l' && title == false && equalSpacing == false) {
+            paragraphSpacing = 0;
             formatJustification();
+        }
+        if(title == true) {
+            formatTitle();
         }
         
        
@@ -178,6 +243,23 @@ public class LineFormatter {
     public ArrayList getErrors() {
         
         return errors;
+    }
+    
+    /**
+     * Removes all formatted lines from respective array list and resets
+     * indeces of current "block" to be formatted
+     */
+    public void clearFormattedLines() {
+        formattedLines.clear();
+        countStartIndex = 0;
+        countEndIndex = 0;
+    }
+    
+    /**
+     * Removes all errors from respective array list
+     */
+    public void clearErrors() {
+        errors.clear();
     }
     
     /**
@@ -283,10 +365,12 @@ public class LineFormatter {
                 line = readFile.readLine();
             }
             readFile.close();
+            finalizeFormatting();
         } catch(FileNotFoundException fileNotFound) {
+            errors.add("Error: File not found");
             
         } catch(IOException ioException) {
-            
+            errors.add("Error: Invalid file");
         }
         
     }
