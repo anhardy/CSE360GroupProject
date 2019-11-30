@@ -286,7 +286,7 @@ public class LineFormatter {
 		 
     }
     /**
-     * Method for formating wrap. This method concatenates the String elements of
+     * Method for formating wrap. This method concatenates the String elements of the
      * ArrayList formattedLines into a single string and then calls formatLineCount with this 
      * single string as its parameter to wrap the text. The method must be called only after an 
      * initial call to formatLineCount is complete. 
@@ -294,10 +294,9 @@ public class LineFormatter {
      */
     private void formatWrap() {
     	
-    	//get formatted lines using assessor method
-    	//test 
+    	
     	String singleString = "";
-    	boolean initialLine = true;
+    	boolean initialLine = true;//boolean true until after first line is added to singleString
     	for(int i = 0; i < formattedLines.size(); i++)
     	{
     		if (initialLine)
@@ -336,8 +335,6 @@ public class LineFormatter {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
             
-            
-          
         }
         if(justification != 'l' && title == false && equalSpacing == false) {
             paragraphSpacing = 0;
@@ -489,7 +486,7 @@ public class LineFormatter {
                 }
                 line = readFile.readLine();
             }
-            
+            //make call to format wrap after control has fully exited formatLine(line)
             if(columns == 1 && wrap == true)
             {
             	formatWrap();
