@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * Adam Hardy
  * Mark Snee
+ *
  * ADD YOUR NAMES HERE
  * CSE360-85141
  * Team Project
@@ -88,7 +89,7 @@ public class LineFormatter {
             for (int blankCount = 0; blankCount < maxChars; blankCount++) {
                 formatted[blankCount] = ' ';
             }
-            charLine = formattedLines.get(formattedIndex).toCharArray();;
+            charLine = formattedLines.get(formattedIndex).toCharArray();
             if (justification == 'r') {
                 for (int i = charLine.length - 1, j = maxChars - 1; i >= 0; i--, j--) {
                     formatted[j] = charLine[i];
@@ -280,10 +281,44 @@ public class LineFormatter {
 		
 		
 		String formattedString = String.valueOf(equallySpacedLine);
+		//return formattedString;
 		formattedLines.add(formattedString);
 		 
     }
-    
+    /**
+     * Method for formating wrap. This method concatenates the String elements of
+     * ArrayList formattedLines into a single string and then calls formatLineCount with this 
+     * single string as its parameter to wrap the text. The method must be called only after an 
+     * initial call to formatLineCount is complete. 
+     * 
+     */
+    private void formatWrap() {
+    	
+    	//get formatted lines using assessor method
+    	//test 
+    	String singleString = "";
+    	boolean initialLine = true;
+    	for(int i = 0; i < formattedLines.size(); i++)
+    	{
+    		if (initialLine)
+    		{
+    			singleString = singleString + formattedLines.get(i);
+    			initialLine = false;//a space will be added between lines when false
+    		}
+    		else
+    		{
+    			
+    		singleString = singleString + " " + formattedLines.get(i);//add space between strings after initial line
+    		
+    		}
+    		
+    	}
+    	//make call to formatLineCount using singleString as the parameter
+    	formatLineCount(singleString);
+    	
+    	
+    	
+    }
     
     /**
      * Method for formatting a line based on commands given
@@ -300,6 +335,9 @@ public class LineFormatter {
         if(columns == 1) {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
+            
+            
+          
         }
         if(justification != 'l' && title == false && equalSpacing == false) {
             paragraphSpacing = 0;
@@ -443,12 +481,18 @@ public class LineFormatter {
                     }
                 } else if(line.length() > 0) {
                     formatLine(line);
+                    
                 } else {
                     formattedLines.add("\n"); //New line moves entire block
                     countStartIndex++;
                     countEndIndex++;
                 }
                 line = readFile.readLine();
+            }
+            
+            if(columns == 1 && wrap == true)
+            {
+            	formatWrap();
             }
             readFile.close();
             finalizeFormatting();
