@@ -179,7 +179,6 @@ public class LineFormatter {
             formattedLines.add(formatted);
             
         }
-        countEndIndex++; //Every line added increases the end of current block
         
         
         
@@ -202,6 +201,77 @@ public class LineFormatter {
         paragraphSpacing = 0;
         return line;
     }
+    private void formatEqualSpacing() {
+    
+        String trimmedLine;
+
+        int lengthOfTrimmedLine;
+
+        int numberOfSpacesToInsert;
+
+        int numberOfInsertionPoints;//spaces will be inserted at insertion points/spaces
+        for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
+            trimmedLine = formattedLines.get(formattedIndex).trim();
+            lengthOfTrimmedLine = trimmedLine.length();
+            numberOfSpacesToInsert = maxChars - lengthOfTrimmedLine;//total number of spaces that need to be inserted
+            numberOfInsertionPoints = 0;
+
+            for (int index = 0; index < lengthOfTrimmedLine; index++)//count number of spaces in line
+            {
+                if (trimmedLine.charAt(index) == ' ') {
+                    numberOfInsertionPoints++;
+                }
+            }
+
+            int numberOfSpacesToInsertAfterEachSpace = 0;
+            //calculate number of spaces to insert at insertion point
+            if (numberOfSpacesToInsert % numberOfInsertionPoints != 0) {
+                numberOfSpacesToInsertAfterEachSpace = (numberOfSpacesToInsert / numberOfInsertionPoints) + 1;
+            } else {
+                numberOfSpacesToInsertAfterEachSpace = numberOfSpacesToInsert / numberOfInsertionPoints;
+            }
+            //declare new char array to add contents of line and added spaces
+            char[] equallySpacedLine = new char[maxChars];
+            //separate indexes for the trimmed line and dynamically created char array
+            int insertIndex = 0;
+            int trimmedLineIndex = 0;
+
+            while (insertIndex <= maxChars - 1) {
+                if (trimmedLine.charAt(trimmedLineIndex) != ' ') {
+
+                    equallySpacedLine[insertIndex] = trimmedLine.charAt(trimmedLineIndex);
+
+                    insertIndex++;
+                    trimmedLineIndex++;
+
+                } else {
+                    //insert existing zero into equallySpacedLine
+
+                    equallySpacedLine[insertIndex] = trimmedLine.charAt(trimmedLineIndex);
+                    insertIndex++;
+                    trimmedLineIndex++;
+
+                    //insert additional spaces into equallySpacedLine
+                    int remainingNumberOfSpacesToInsert = numberOfSpacesToInsertAfterEachSpace;
+
+                    while (remainingNumberOfSpacesToInsert > 0 && numberOfSpacesToInsert > 0) {
+                        equallySpacedLine[insertIndex] = ' ';
+                        remainingNumberOfSpacesToInsert--;
+
+                        numberOfSpacesToInsert--;
+                        insertIndex++;
+                    }
+
+                }
+
+            }
+
+            String formattedString = String.valueOf(equallySpacedLine);
+            formattedLines.set(formattedIndex, formattedString);
+        }
+
+    }
+    
     /**
      * Method for formatting a line based on commands given
      * @param line is the line to be formatted
@@ -217,6 +287,7 @@ public class LineFormatter {
         if(columns == 1) {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
+            countEndIndex = formattedLines.size();
         }
         if(justification != 'l' && title == false && equalSpacing == false) {
             paragraphSpacing = 0;
@@ -225,9 +296,12 @@ public class LineFormatter {
         if(title == true) {
             formatTitle();
         }
-        
+        if(title == false && equalSpacing == true) {
+            formatEqualSpacing();
+        }
        
     }
+    
     /**
      * Accessor method for accessing list of formatted lines
      * @return the list of formatted lines
@@ -302,7 +376,11 @@ public class LineFormatter {
                     } else if (line.charAt(1) == 'c') {
                         justification = 'c';
                     } else if (line.charAt(1) == 'e') {
-                        equalSpacing = true;
+                        if(equalSpacing == false) {
+                            equalSpacing = true;
+                        } else {
+                            equalSpacing = false;
+                        }
                     } else if (line.charAt(1) == 'w') {
                         if(line.charAt(2) == '+') {
                             wrap = true;
