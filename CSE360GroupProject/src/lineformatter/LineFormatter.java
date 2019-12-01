@@ -28,6 +28,7 @@ public class LineFormatter {
     private int countStartIndex; //Beginning of current "block" in array list
     private int countEndIndex; //End of current "block" in array list
     
+    
    /**
     * Finalizes formatting by ensuring all lines have a newline character
     */ 
@@ -320,6 +321,69 @@ public class LineFormatter {
     }
     
     /**
+     * Method for formatting columns. This method must be called after an initial call to formatLineLength 
+     * with the variable for maximum characters is set to 35. This method calls formatWrap to format the columns.
+     * "Rows" here and in the notes below refers to the number of rows created after the call to wrap.
+     * The method divides the number of total rows in half and assigns the second half of the rows
+     * to be concatenated with the first half.
+     *  
+     */
+    public void formatColumns() {
+    	int wrapStartingIndex = countEndIndex;
+    	
+    	//make call to Wrap method to format rows of length 35
+    	formatWrap();
+    	
+    	int wrapEndIndex = countEndIndex;
+    	int totalNumberOfRows = wrapEndIndex - wrapStartingIndex;
+    	
+    	int numberOfRowsForLeftColumn = 0;
+    	int numberOfRowsForRightColumn = 0;
+    	int indexForRightColumn = 0;
+    	
+    	if (totalNumberOfRows % 2 != 0)
+    	{
+    		//If the number of rows is odd, the left column receives the additional column.
+    		numberOfRowsForLeftColumn = (totalNumberOfRows/2) + 1;
+    		numberOfRowsForRightColumn = totalNumberOfRows - numberOfRowsForLeftColumn;
+    		indexForRightColumn = wrapStartingIndex + numberOfRowsForLeftColumn;
+    		
+    	}
+    	else
+    	{
+    		numberOfRowsForLeftColumn = (totalNumberOfRows/2);
+    		numberOfRowsForRightColumn = totalNumberOfRows - numberOfRowsForLeftColumn;
+    		indexForRightColumn = wrapStartingIndex + numberOfRowsForLeftColumn;
+    		
+    	}
+    	
+    	int numberOfConcatenations = numberOfRowsForRightColumn;
+    	//Create a string of spaces to separate the columns.
+    	String tenSpaces = "          ";
+    	//Concatenate formated formated row with string of 10 spaces and another row to form right column.
+    	while(numberOfConcatenations > 0)
+    	{
+    		String tempString = formattedLines.get(wrapStartingIndex) + tenSpaces + formattedLines.get(indexForRightColumn);
+    		System.out.println(tempString);
+    		numberOfConcatenations--;
+    		wrapStartingIndex++;
+    		
+    		//Do not increment indexForRightColumn when zero to avoid out of bounds exception.
+    		if (numberOfConcatenations > 0)
+    		{
+    			indexForRightColumn++;
+    		}
+    	}
+    	//When there are an odd number of total columns, the left is favored. The following prints the 
+    	//last line in the left column, which does not need to be concatenated with another row.
+    	if (totalNumberOfRows % 2 != 0)
+    	{
+    	String tempString = formattedLines.get(wrapStartingIndex);
+    	System.out.println(tempString);
+    	}
+    }
+    
+    /**
      * Method for formatting a line based on commands given
      * @param line is the line to be formatted
      * @return 
@@ -334,7 +398,13 @@ public class LineFormatter {
         if(columns == 1) {
             countStartIndex = formattedLines.size();
             formatLineCount(line);
-            
+        }
+        if(columns == 2) {
+        	
+        	countStartIndex = formattedLines.size();
+        	maxChars = 35;
+        	formatLineCount(line);
+        	
         }
         if(justification != 'l' && title == false && equalSpacing == false) {
             paragraphSpacing = 0;
@@ -490,6 +560,10 @@ public class LineFormatter {
             if(columns == 1 && wrap == true)
             {
             	formatWrap();
+            }
+            if(columns == 2)
+            {
+            	formatColumns();
             }
             readFile.close();
             finalizeFormatting();
