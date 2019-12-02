@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * Adam Hardy
  * Mark Snee
- *
- * ADD YOUR NAMES HERE
+ * Yuying Guan
+ * Samuel Maness
  * CSE360-85141
  * Team Project
  * This class is intended to format a text file based on commands within the
@@ -27,11 +27,11 @@ public class LineFormatter {
     private int columns = 1;
     private int countStartIndex; //Beginning of current "block" in array list
     private int countEndIndex; //End of current "block" in array list
-    
-    
+
+
    /**
     * Finalizes formatting by ensuring all lines have a newline character
-    */ 
+    */
     public void finalizeFormatting() {
         String line;
         for(int i = 0; i < formattedLines.size(); i++) {
@@ -55,13 +55,13 @@ public class LineFormatter {
                 outFile.print(formattedLines.get(i));
             }
             outFile.close();
-            
+
         } catch (IOException ex) {
             errors.add("Error: Invalid File. File could not be written");
         }
     }
     /**
-     * Method for adding number of blank lines specified by command, then 
+     * Method for adding number of blank lines specified by command, then
      * resetting blank line count to 0 until next blank line command read
      */
     public void addBlankLines() {
@@ -71,20 +71,20 @@ public class LineFormatter {
             countEndIndex++;
         }
         blankLines = 0;
-        
+
     }
-    
+
     /**
      * Method for formatting line justification of lines already formatted
      * for line count. Creates two character arrays, one filled with as many
      * spaces as the maximum character count, and the other created from the
-     * line to be formatted. This allows the a formatted String to be 
+     * line to be formatted. This allows the a formatted String to be
      * dynamically built from the point of justification: left to right
      * for left, middle out for centered, and right to left for right.
      */
     public void formatJustification() {
         char[] formatted = new char[maxChars];
-        char[] charLine; 
+        char[] charLine;
         String line;
         for (int formattedIndex = countStartIndex; formattedIndex < countEndIndex; formattedIndex++) {
             for (int blankCount = 0; blankCount < maxChars; blankCount++) {
@@ -115,10 +115,10 @@ public class LineFormatter {
             }
 
         }
-        
+
     }
     /**
-     * Using the same logic as center justification, a title formatted by 
+     * Using the same logic as center justification, a title formatted by
      * building a character array outward from the middle. Title only formats
      * the line after the command.
      */
@@ -153,11 +153,11 @@ public class LineFormatter {
         formattedLines.add(underline);
         title = false;
     }
-    
+
     /**
      * This method takes in a line and checks if its length is greater than
      * the maximum characters. If it is, it decrements from the max character
-     * length until a space is reached, so as not to split in the middle of a 
+     * length until a space is reached, so as not to split in the middle of a
      * word. The first substring is added to the arraylist of formatted lines.
      * If the second string is not empty, the method is recursively called, with
      * the remaining string being passed in.
@@ -180,19 +180,19 @@ public class LineFormatter {
         } else {
             formatted = line;
             formattedLines.add(formatted);
-            
+
         }
         countEndIndex++; //Every line added increases the end of current block
-        
-        
-        
+
+
+
     }
     /**
      * This method adds in a number of spaces before a line based on
      * a given count from a paragraph command. Paragraph spacing is reset to 0
      * until next paragraph command given
      * @param line is the line be made into a paragraph
-     * @return 
+     * @return
      */
     public String formatParagraph(String line) {
         String spacing = "";
@@ -201,26 +201,26 @@ public class LineFormatter {
         }
         spacing += line;
         line = spacing+ "\n";
-        
+
         paragraphSpacing = 0;
         return line;
     }
-    
+
     /**
      * Method for formating equal spacing.
      * @param line
      */
     private void formatEqualSpacing(String line) {
-    
-    	
+
+
     	String trimmedLine = line.trim();//trim spaces off beginning and end of read line
-    	
+
     	int lengthOfTrimmedLine = trimmedLine.length();
-    	
+
 		int numberOfSpacesToInsert = maxChars - lengthOfTrimmedLine;//total number of spaces that need to be inserted
-		
+
 		int numberOfInsertionPoints = 0;//spaces will be inserted at insertion points/spaces
-		
+
 		for (int index = 0; index < lengthOfTrimmedLine; index++)//count number of spaces in line
 		{
 			if (trimmedLine.charAt(index) == ' ')
@@ -228,14 +228,14 @@ public class LineFormatter {
 				numberOfInsertionPoints++;
 			}
 		}
-		
+
 		int numberOfSpacesToInsertAfterEachSpace = 0;
 		//calculate number of spaces to insert at insertion point
 		if (numberOfSpacesToInsert % numberOfInsertionPoints != 0)
 		{
-			numberOfSpacesToInsertAfterEachSpace = (numberOfSpacesToInsert/numberOfInsertionPoints) + 1;	
+			numberOfSpacesToInsertAfterEachSpace = (numberOfSpacesToInsert/numberOfInsertionPoints) + 1;
 		}
-		else 
+		else
 			{
 			numberOfSpacesToInsertAfterEachSpace = numberOfSpacesToInsert/numberOfInsertionPoints;
 			}
@@ -244,58 +244,58 @@ public class LineFormatter {
 		//separate indexes for the trimmed line and dynamically created char array
 		int insertIndex = 0;
 		int trimmedLineIndex = 0;
-		
+
 		while(insertIndex <= maxChars-1)
 		{
 			if(trimmedLine.charAt(trimmedLineIndex) != ' ')
-			{	
-				
+			{
+
 				equallySpacedLine[insertIndex] = trimmedLine.charAt(trimmedLineIndex);
-				
+
 				insertIndex++;
 				trimmedLineIndex++;
-				
+
 			}
-			else 
-			{	
+			else
+			{
 				//insert existing zero into equallySpacedLine
-				
+
 				equallySpacedLine[insertIndex] = trimmedLine.charAt(trimmedLineIndex);
 				insertIndex++;
 				trimmedLineIndex++;
-				
+
 				//insert additional spaces into equallySpacedLine
 				int remainingNumberOfSpacesToInsert = numberOfSpacesToInsertAfterEachSpace;
-				
+
 				while(remainingNumberOfSpacesToInsert > 0 && numberOfSpacesToInsert > 0)
 				{
 					equallySpacedLine[insertIndex] = ' ';
 					remainingNumberOfSpacesToInsert--;
-					
+
 					numberOfSpacesToInsert--;
 					insertIndex++;
 				}
-			
+
 			}
-			
+
 		}
-		
-		
+
+
 		String formattedString = String.valueOf(equallySpacedLine);
 		//return formattedString;
 		formattedLines.add(formattedString);
-		 
+
     }
     /**
      * Method for formating wrap. This method concatenates the String elements of the
-     * ArrayList formattedLines into a single string and then calls formatLineCount with this 
-     * single string as its parameter to wrap the text. The method must be called only after an 
-     * initial call to formatLineCount is complete. 
-     * 
+     * ArrayList formattedLines into a single string and then calls formatLineCount with this
+     * single string as its parameter to wrap the text. The method must be called only after an
+     * initial call to formatLineCount is complete.
+     *
      */
     private void formatWrap() {
-    	
-    	
+
+
     	String singleString = "";
     	boolean initialLine = true;//boolean true until after first line is added to singleString
     	for(int i = 0; i < formattedLines.size(); i++)
@@ -307,56 +307,56 @@ public class LineFormatter {
     		}
     		else
     		{
-    			
+
     		singleString = singleString + " " + formattedLines.get(i);//add space between strings after initial line
-    		
+
     		}
-    		
+
     	}
     	//make call to formatLineCount using singleString as the parameter
     	formatLineCount(singleString);
-    	
-    	
-    	
+
+
+
     }
-    
+
     /**
-     * Method for formatting columns. This method must be called after an initial call to formatLineLength 
+     * Method for formatting columns. This method must be called after an initial call to formatLineLength
      * with the variable for maximum characters is set to 35. This method calls formatWrap to format the columns.
      * "Rows" here and in the notes below refers to the number of rows created after the call to wrap.
      * The method divides the number of total rows in half and assigns the second half of the rows
      * to be concatenated with the first half.
-     *  
+     *
      */
     public void formatColumns() {
     	int wrapStartingIndex = countEndIndex;
-    	
+
     	//make call to Wrap method to format rows of length 35
     	formatWrap();
-    	
+
     	int wrapEndIndex = countEndIndex;
     	int totalNumberOfRows = wrapEndIndex - wrapStartingIndex;
-    	
+
     	int numberOfRowsForLeftColumn = 0;
     	int numberOfRowsForRightColumn = 0;
     	int indexForRightColumn = 0;
-    	
+
     	if (totalNumberOfRows % 2 != 0)
     	{
     		//If the number of rows is odd, the left column receives the additional column.
     		numberOfRowsForLeftColumn = (totalNumberOfRows/2) + 1;
     		numberOfRowsForRightColumn = totalNumberOfRows - numberOfRowsForLeftColumn;
     		indexForRightColumn = wrapStartingIndex + numberOfRowsForLeftColumn;
-    		
+
     	}
     	else
     	{
     		numberOfRowsForLeftColumn = (totalNumberOfRows/2);
     		numberOfRowsForRightColumn = totalNumberOfRows - numberOfRowsForLeftColumn;
     		indexForRightColumn = wrapStartingIndex + numberOfRowsForLeftColumn;
-    		
+
     	}
-    	
+
     	int numberOfConcatenations = numberOfRowsForRightColumn;
     	//Create a string of spaces to separate the columns.
     	String tenSpaces = "          ";
@@ -367,14 +367,14 @@ public class LineFormatter {
     		System.out.println(tempString);
     		numberOfConcatenations--;
     		wrapStartingIndex++;
-    		
+
     		//Do not increment indexForRightColumn when zero to avoid out of bounds exception.
     		if (numberOfConcatenations > 0)
     		{
     			indexForRightColumn++;
     		}
     	}
-    	//When there are an odd number of total columns, the left is favored. The following prints the 
+    	//When there are an odd number of total columns, the left is favored. The following prints the
     	//last line in the left column, which does not need to be concatenated with another row.
     	if (totalNumberOfRows % 2 != 0)
     	{
@@ -382,11 +382,11 @@ public class LineFormatter {
     	System.out.println(tempString);
     	}
     }
-    
+
     /**
      * Method for formatting a line based on commands given
      * @param line is the line to be formatted
-     * @return 
+     * @return
      */
     public void formatLine(String line) {
         line = line.trim();
@@ -400,11 +400,11 @@ public class LineFormatter {
             formatLineCount(line);
         }
         if(columns == 2) {
-        	
+
         	countStartIndex = formattedLines.size();
         	maxChars = 35;
         	formatLineCount(line);
-        	
+
         }
         if(justification != 'l' && title == false && equalSpacing == false) {
             paragraphSpacing = 0;
@@ -416,15 +416,15 @@ public class LineFormatter {
         if(title == false && equalSpacing == true) {
         	formatEqualSpacing(line);
         }
-        
-       
+
+
     }
     /**
      * Accessor method for accessing list of formatted lines
      * @return the list of formatted lines
      */
     public ArrayList getFormattedLines() {
-        
+
         return formattedLines;
     }
     /**
@@ -432,10 +432,10 @@ public class LineFormatter {
      * @return the list of errors
      */
     public ArrayList getErrors() {
-        
+
         return errors;
     }
-    
+
     /**
      * Removes all formatted lines from respective array list and resets
      * indeces of current "block" to be formatted
@@ -445,16 +445,16 @@ public class LineFormatter {
         countStartIndex = 0;
         countEndIndex = 0;
     }
-    
+
     /**
      * Removes all errors from respective array list
      */
     public void clearErrors() {
         errors.clear();
     }
-    
+
     /**
-     * Method for reading and formatting a file. It will continue to read and 
+     * Method for reading and formatting a file. It will continue to read and
      * parse commands until a non-command line has been read, at which point the
      * line will be formatted based on these commands. This process will repeat
      * for each line and commands until the end of the file.
@@ -466,9 +466,9 @@ public class LineFormatter {
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader readFile = new BufferedReader(fileReader);
-            
+
             line = readFile.readLine();
-            
+
             while(line != null) {
                 //Code and method calls for formatting goes here
                 lineCount++;
@@ -485,7 +485,7 @@ public class LineFormatter {
                         } catch(NumberFormatException exception) {
                             errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
                         }
-                      
+
                     } else if (line.charAt(1) == 'r') {
                         justification = 'r';
                     } else if (line.charAt(1) == 'l') {
@@ -548,7 +548,7 @@ public class LineFormatter {
                     }
                 } else if(line.length() > 0) {
                     formatLine(line);
-                    
+
                 } else {
                     formattedLines.add("\n"); //New line moves entire block
                     countStartIndex++;
@@ -569,15 +569,15 @@ public class LineFormatter {
             finalizeFormatting();
         } catch(FileNotFoundException fileNotFound) {
             errors.add("Error: File not found");
-            
+
         } catch(IOException ioException) {
             errors.add("Error: Invalid file");
         }
-        
-    }
-    
-    
 
-   
-    
+    }
+
+
+
+
+
 }
