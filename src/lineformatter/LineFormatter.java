@@ -213,12 +213,6 @@ public class LineFormatter extends ArrayList<String> {
             }
         }
 
-        //System.out.println("replacement index in format line length is " + replacementIndex);
-        // for(int i = replacementIndex; i < countEndIndex; i++)
-        // {
-        //}
-        //System.out.println("replacementIndex is " + replacementIndex);
-        //System.out.println("first line to remove is " + formattedLines.get(replacementIndex));
 
         return replacementIndex;
     }
@@ -378,10 +372,7 @@ public class LineFormatter extends ArrayList<String> {
             } else {
 
                 singleString = singleString + " " + formattedLines.get(i);//add space between strings after initial line
-                //System.out.println(singleString);
-                //System.out.println("first formatted line is " + formattedLines.get(0));
-                //System.out.println("second formatted line is " + formattedLines.get(1));
-                //System.out.println("last formatted line is " + formattedLines.get(10));
+             
 
                 count++;
 
@@ -389,10 +380,9 @@ public class LineFormatter extends ArrayList<String> {
 
         }
 
-        //make call to formatLineCount using singleString as the parameter
-        System.out.println("count is " + count);
+        //make call to formatLineCount using singleString as the parameter    
         int linesDecreasedTo = formatLineCount(singleString);
-        System.out.println("linesDecreased to = " + linesDecreasedTo);
+
 
         //Attention there is a question here as to count - 1 or count
         //or linesDecreasedTo to or LinesDecreasedTo -1
@@ -400,7 +390,6 @@ public class LineFormatter extends ArrayList<String> {
         if (calledFromColumns || calledFromFormatWrap) {
             while (numberOfArrayElementsToRemove > 0) {
 
-                System.out.println("removed line is " + formattedLines.get(replacementIndex));
                 formattedLines.remove(replacementIndex);
                 numberOfArrayElementsToRemove--;
 
@@ -436,12 +425,9 @@ public class LineFormatter extends ArrayList<String> {
         calledFromColumns = true;
         //countStarting index is showing as 46
         int wrapStartingIndex = start;
-        System.out.println("start of first column = " + formattedLines.get(start));
-        System.out.println("wrapStartingIndex from top of format Columns = " + wrapStartingIndex);
         //make call to Wrap method to format rows of length 35
         replacementIndex = start;
         int linesDecreasedTo = formatWrap();
-        System.out.println("linesdecreased to from formatColumns " + linesDecreasedTo);
 
         int wrapEndIndex = countEndIndex;
         int totalNumberOfRows = countEndIndex - start;
@@ -471,7 +457,6 @@ public class LineFormatter extends ArrayList<String> {
             String tempString = formattedLines.get(wrapStartingIndex) + tenSpaces + formattedLines.get(indexForRightColumn);
             //use set to set tempString here
             formattedLines.set(wrapStartingIndex, tempString);
-            System.out.println(tempString);
             numberOfConcatenations--;
             wrapStartingIndex++;
 
@@ -485,14 +470,11 @@ public class LineFormatter extends ArrayList<String> {
         if (totalNumberOfRows % 2 != 0) {
             String tempString = formattedLines.get(wrapStartingIndex);
             formattedLines.set(wrapStartingIndex, tempString);
-            System.out.println(tempString);
         }
 
         //remove elements from formatted lines
         int numberOfArrayElementsToRemove = totalNumberOfRows - numberOfRowsForLeftColumn;
         int removalIndex = countEndIndex-1;
-        System.out.println("number of elements to remove from columns funtion " + numberOfArrayElementsToRemove);
-        System.out.println("removal Index from columns function " + removalIndex);
         while (numberOfArrayElementsToRemove > 0) {
 
             formattedLines.remove(removalIndex);
