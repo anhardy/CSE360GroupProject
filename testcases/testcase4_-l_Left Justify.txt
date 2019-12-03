@@ -1,0 +1,12 @@
+-l
+Testing for LEFT-JUTIFY and number one two three.
+=================================================
+
+-l
+Testing for LEFT-JUTIFY with LONG LINE and number one two three four five six seven eight nine ten eleven twelve.
+=================================================
+
+
+-l
+     Testing for LEFT-JUTIFY with INDENT and number one two three.
+=================================================

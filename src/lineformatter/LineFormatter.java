@@ -4,11 +4,15 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Adam Hardy Mark Snee
- *
- * ADD YOUR NAMES HERE CSE360-85141 Team Project This class is intended to
- * format a text file based on commands within the given file.
- *
+ * Yuying Guan
+ * Adam Hardy
+ * Samuel Maness
+ * Mark Snee
+
+ * CSE360-85141
+ * Team Project
+ * This class is intended to format a text file based on commands within the
+ * given file.
  * @author ahard
  */
 //extends ArrayList<String>
@@ -82,12 +86,12 @@ public class LineFormatter extends ArrayList<String> {
     }
 
     /**
-     * Method for formatting line justification of lines already formatted for
-     * line count. Creates two character arrays, one filled with as many spaces
-     * as the maximum character count, and the other created from the line to be
-     * formatted. This allows the a formatted String to be dynamically built
-     * from the point of justification: left to right for left, middle out for
-     * centered, and right to left for right.
+     * Method for formatting line justification of lines already formatted
+     * for line count. Creates two character arrays, one filled with as many
+     * spaces as the maximum character count, and the other created from the
+     * line to be formatted. This allows the a formatted String to be
+     * dynamically built from the point of justification: left to right
+     * for left, middle out for centered, and right to left for right.
      */
     public void formatJustification() {
         char[] formatted = new char[maxChars];

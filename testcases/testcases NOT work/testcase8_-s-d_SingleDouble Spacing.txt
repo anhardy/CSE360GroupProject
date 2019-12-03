@@ -1,0 +1,22 @@
+-s
+Testing for SINGLE-SPACING and number one two three four five six seven eight nine.
+Ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen.
+========================================================================
+
+
+-s
+Testing for SINGLE-SPACING with LONE LINE and number one two three four five six seven eight nine ten eleven twelve.
+Thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three.
+========================================================================
+
+
+-d
+Testing for DOUBLE-SPACING and number one two three four five six seven eight nine.
+Ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen.
+========================================================================
+
+
+-d
+Testing for DOUBLE-SPACING with LONE LINE and number one two three four five six seven eight nine ten eleven twelve.
+Thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two twenty-three.
+========================================================================

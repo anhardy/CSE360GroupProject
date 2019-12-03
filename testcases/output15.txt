@@ -1,0 +1,6 @@
+Testing for SINGLE-COLUMN and
+number one two three four five six
+seve eight nine ten eleven twelve
+thirteen fourteen fifteen sixteen
+seventeen eighteen nineteen twenty
+twenty-one twenty-two twenty-three.

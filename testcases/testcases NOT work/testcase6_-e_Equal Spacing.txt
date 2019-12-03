@@ -1,0 +1,10 @@
+-e
+Testing for EQUAL-SPACING and number one two three.
+====================================================
+
+-e
+Testing for EQUAL-SPACING with LONG LINE and number one two three four five six seven eight nine ten eleven twelve.
+=====================================================
+
+-e
+     Testing for EQUAL-SPACING with INDENT and number one two three.
