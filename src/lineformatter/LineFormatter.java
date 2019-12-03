@@ -728,6 +728,8 @@ public class LineFormatter extends ArrayList<String> {
                         } catch (NumberFormatException exception) {
                             errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                         }
+                    } else {
+                        errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                     }
                 } else if (line.length() > 0) {
                     formatLine(line);
