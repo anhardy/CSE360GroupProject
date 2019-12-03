@@ -217,8 +217,8 @@ public class LineFormatter extends ArrayList<String> {
         // for(int i = replacementIndex; i < countEndIndex; i++)
         // {
         //}
-        System.out.println("replacementIndex is " + replacementIndex);
-        System.out.println("first line to remove is " + formattedLines.get(replacementIndex));
+        //System.out.println("replacementIndex is " + replacementIndex);
+        //System.out.println("first line to remove is " + formattedLines.get(replacementIndex));
 
         return replacementIndex;
     }
@@ -405,7 +405,9 @@ public class LineFormatter extends ArrayList<String> {
                 numberOfArrayElementsToRemove--;
 
             }
-            formattedLines.remove(replacementIndex);
+            if(replacementIndex < countEndIndex) {
+                formattedLines.remove(replacementIndex);
+            }
         }
 
         //int removeIndex = replacementIndex;
@@ -418,7 +420,8 @@ public class LineFormatter extends ArrayList<String> {
         return linesDecreasedTo;
     }
 
-    /**
+   /**
+    *  /**
      * Method for formatting columns. This method must be called after an
      * initial call to formatLineLength with the variable for maximum characters
      * is set to 35. This method calls formatWrap to format the columns. "Rows"
@@ -427,19 +430,21 @@ public class LineFormatter extends ArrayList<String> {
      * assigns the second half of the rows to be concatenated with the first
      * half.
      *
-     */
-    public void formatColumns() {
+     * @param start start of column block to be formatted
+    */
+    public void formatColumns(int start) {
         calledFromColumns = true;
         //countStarting index is showing as 46
-        int wrapStartingIndex = 0;
-        System.out.println("start of first column = " + formattedLines.get(0));
+        int wrapStartingIndex = start;
+        System.out.println("start of first column = " + formattedLines.get(start));
         System.out.println("wrapStartingIndex from top of format Columns = " + wrapStartingIndex);
         //make call to Wrap method to format rows of length 35
+        replacementIndex = start;
         int linesDecreasedTo = formatWrap();
         System.out.println("linesdecreased to from formatColumns " + linesDecreasedTo);
 
         int wrapEndIndex = countEndIndex;
-        int totalNumberOfRows = linesDecreasedTo;
+        int totalNumberOfRows = countEndIndex - start;
 
         int numberOfRowsForLeftColumn = 0;
         int numberOfRowsForRightColumn = 0;
@@ -484,13 +489,14 @@ public class LineFormatter extends ArrayList<String> {
         }
 
         //remove elements from formatted lines
-        int numberOfArrayElementsToRemove = linesDecreasedTo - numberOfRowsForLeftColumn;
-        int removalIndex = linesDecreasedTo - numberOfRowsForLeftColumn;
+        int numberOfArrayElementsToRemove = totalNumberOfRows - numberOfRowsForLeftColumn;
+        int removalIndex = countEndIndex-1;
         System.out.println("number of elements to remove from columns funtion " + numberOfArrayElementsToRemove);
         System.out.println("removal Index from columns function " + removalIndex);
         while (numberOfArrayElementsToRemove > 0) {
 
             formattedLines.remove(removalIndex);
+            removalIndex--;
             numberOfArrayElementsToRemove--;
         }
 
@@ -557,7 +563,7 @@ public class LineFormatter extends ArrayList<String> {
     }
 
     /**
-     * Removes all formatted lines from respective array list and resets Indices
+     * Removes all formatted lines from respective array list and resets indices
      * of current "block" to be formatted
      */
     public void clearFormattedLines() {
@@ -585,13 +591,14 @@ public class LineFormatter extends ArrayList<String> {
     public void clearErrors() {
         errors.clear();
     }
-    
+    /**
+     * Adds an extra space for segment with double spacing turned on
+     * @param start Beginning of double space segment
+     * @param end  End of double space segment
+     */
     public void formatDoubleSpace(int start, int end) {
         for (int i = start; i < end; i++) {
             if (!formattedLines.get(i).contains("\n")) {
-                 if(i > 40 && i < 55) {
-                    System.out.println("Test");
-                }
                 formattedLines.add(i, "\n");
                
                 i++;
@@ -614,6 +621,8 @@ public class LineFormatter extends ArrayList<String> {
         int lineCount = 0;
         int spaceStartIndex = 0;
         int spaceEndIndex = 0;
+        int startColumnIndex = 0;
+        int lastMaxChars = maxChars;
         try {
             FileReader fileReader = new FileReader(file);
             BufferedReader readFile = new BufferedReader(fileReader);
@@ -701,10 +710,16 @@ public class LineFormatter extends ArrayList<String> {
                         String remainingCommand = line.substring(2);
                         try {
                             int commandCount = Integer.parseInt(remainingCommand);
-                            if (commandCount == 2 || commandCount == 1) {
-                                columns = commandCount;
-                                if (columns == 2 && commandCount == 1) {
-                                    formatColumns();
+                            if (commandCount == 2 || commandCount == 1) {                               
+                                if (columns == 1 && commandCount == 2) {
+                                    startColumnIndex = countStartIndex + 1;
+                                    columns = commandCount;
+                                    lastMaxChars = maxChars;
+                                }
+                                if(columns == 2 & commandCount == 1) {
+                                    formatColumns(startColumnIndex);
+                                    columns = commandCount;
+                                    maxChars = lastMaxChars;
                                 }
                             } else {
                                 errors.add("Line " + lineCount + " error: Invalid column count. Column count can be 1 or 2");
@@ -725,7 +740,7 @@ public class LineFormatter extends ArrayList<String> {
                 formatWrap();
             }
             if (columns == 2) {
-                formatColumns();
+                formatColumns(startColumnIndex);
             }
             if(lineSpacing == 2) {
                 spaceEndIndex = formattedLines.size();

@@ -438,7 +438,7 @@ public class LineFormatter {
 
     /**
      * Removes all formatted lines from respective array list and resets
-     * indeces of current "block" to be formatted
+     * indices of current "block" to be formatted
      */
     public void clearFormattedLines() {
         formattedLines.clear();
