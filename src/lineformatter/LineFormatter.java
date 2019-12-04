@@ -4,15 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Yuying Guan
- * Adam Hardy
- * Samuel Maness
- * Mark Snee
-
- * CSE360-85141
- * Team Project
- * This class is intended to format a text file based on commands within the
- * given file.
+ * Yuying Guan Adam Hardy Samuel Maness Mark Snee
+ *
+ * CSE360-85141 Team Project This class is intended to format a text file based
+ * on commands within the given file.
+ *
  * @author ahard
  */
 //extends ArrayList<String>
@@ -32,7 +28,6 @@ public class LineFormatter extends ArrayList<String> {
     private int countStartIndex; //Beginning of current "block" in array list
     private int countEndIndex; //End of current "block" in array list
     private int replacementIndex = 0;
-
 
     boolean calledFromFormatWrap = false;//indicates wrap has been called
     boolean calledFromColumns = false;
@@ -86,12 +81,12 @@ public class LineFormatter extends ArrayList<String> {
     }
 
     /**
-     * Method for formatting line justification of lines already formatted
-     * for line count. Creates two character arrays, one filled with as many
-     * spaces as the maximum character count, and the other created from the
-     * line to be formatted. This allows the a formatted String to be
-     * dynamically built from the point of justification: left to right
-     * for left, middle out for centered, and right to left for right.
+     * Method for formatting line justification of lines already formatted for
+     * line count. Creates two character arrays, one filled with as many spaces
+     * as the maximum character count, and the other created from the line to be
+     * formatted. This allows the a formatted String to be dynamically built
+     * from the point of justification: left to right for left, middle out for
+     * centered, and right to left for right.
      */
     public void formatJustification() {
         char[] formatted = new char[maxChars];
@@ -212,7 +207,6 @@ public class LineFormatter extends ArrayList<String> {
 
             }
         }
-
 
         return replacementIndex;
     }
@@ -372,7 +366,6 @@ public class LineFormatter extends ArrayList<String> {
             } else {
 
                 singleString = singleString + " " + formattedLines.get(i);//add space between strings after initial line
-             
 
                 count++;
 
@@ -382,7 +375,6 @@ public class LineFormatter extends ArrayList<String> {
 
         //make call to formatLineCount using singleString as the parameter    
         int linesDecreasedTo = formatLineCount(singleString);
-
 
         //Attention there is a question here as to count - 1 or count
         //or linesDecreasedTo to or LinesDecreasedTo -1
@@ -394,7 +386,8 @@ public class LineFormatter extends ArrayList<String> {
                 numberOfArrayElementsToRemove--;
 
             }
-            if(replacementIndex < countEndIndex) {
+            countEndIndex = formattedLines.size();
+            if (replacementIndex < countEndIndex) {
                 formattedLines.remove(replacementIndex);
             }
         }
@@ -409,8 +402,8 @@ public class LineFormatter extends ArrayList<String> {
         return linesDecreasedTo;
     }
 
-   /**
-    *  /**
+    /**
+     *  /**
      * Method for formatting columns. This method must be called after an
      * initial call to formatLineLength with the variable for maximum characters
      * is set to 35. This method calls formatWrap to format the columns. "Rows"
@@ -420,7 +413,7 @@ public class LineFormatter extends ArrayList<String> {
      * half.
      *
      * @param start start of column block to be formatted
-    */
+     */
     public void formatColumns(int start) {
         calledFromColumns = true;
         //countStarting index is showing as 46
@@ -474,7 +467,7 @@ public class LineFormatter extends ArrayList<String> {
 
         //remove elements from formatted lines
         int numberOfArrayElementsToRemove = totalNumberOfRows - numberOfRowsForLeftColumn;
-        int removalIndex = countEndIndex-1;
+        int removalIndex = countEndIndex - 1;
         while (numberOfArrayElementsToRemove > 0) {
 
             formattedLines.remove(removalIndex);
@@ -573,16 +566,18 @@ public class LineFormatter extends ArrayList<String> {
     public void clearErrors() {
         errors.clear();
     }
+
     /**
      * Adds an extra space for segment with double spacing turned on
+     *
      * @param start Beginning of double space segment
-     * @param end  End of double space segment
+     * @param end End of double space segment
      */
     public void formatDoubleSpace(int start, int end) {
         for (int i = start; i < end; i++) {
             if (!formattedLines.get(i).contains("\n")) {
                 formattedLines.add(i, "\n");
-               
+
                 i++;
                 end++;
                 countEndIndex++;
@@ -615,108 +610,125 @@ public class LineFormatter extends ArrayList<String> {
                 //Code and method calls for formatting goes here
                 lineCount++;
                 if (line.length() > 0 && line.charAt(0) == '-') {
-                    if (line.charAt(1) == 'n') {
-                        String remainingCommand = line.substring(2);
-                        try {
-                            int commandCount = Integer.parseInt(remainingCommand);
-                            if (commandCount > 0) {
-                                maxChars = commandCount;
-                            } else {
-                                errors.add("Line " + lineCount + " error: Maximum line length must be greater than 0");
-                            }
-                        } catch (NumberFormatException exception) {
-                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
-                        }
-
-                    } else if (line.charAt(1) == 'r') {
-                        justification = 'r';
-                    } else if (line.charAt(1) == 'l') {
-                        justification = 'l';
-                    } else if (line.charAt(1) == 'c') {
-                        justification = 'c';
-                    } else if (line.charAt(1) == 'e') {
-                       equalSpacing = true;
-
-                    } else if (line.charAt(1) == 'w') {
-                        if (line.charAt(2) == '+') {
-                            wrap = true;
-                            replacementIndex = countStartIndex + 1;
-                        } else if (line.charAt(2) == '-') {
-
-                            formatWrap();
-                            wrap = false;
-                        } else {
-                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
-                        }
-                    } else if (line.charAt(1) == 's') {
-                        if(lineSpacing == 2) {
-                            spaceEndIndex = countEndIndex;
-                            formatDoubleSpace(spaceStartIndex, spaceEndIndex);
-                        } 
-                        lineSpacing = 1;
-                    } else if (line.charAt(1) == 'd') {
-                       spaceStartIndex = countStartIndex + 1;
-                       lineSpacing = 2;
-                    } else if (line.charAt(1) == 't') {
-                        title = true;
-                    } else if (line.charAt(1) == 'p') {
-                        String remainingCommand = line.substring(2);
-                        try {
-                            int commandCount = Integer.parseInt(remainingCommand);
-                            if (commandCount > 0) {
-                                paragraphSpacing = commandCount;
-                            } else {
-                                errors.add("Line " + lineCount + " error: Paragraph spacing must be greater than 0");
-                            }
-                        } catch (NumberFormatException exception) {
-                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
-                        }
-                    } else if (line.charAt(1) == 'b') {
-                        String remainingCommand = line.substring(2);
-                        try {
-                            int commandCount = Integer.parseInt(remainingCommand);
-                            if (commandCount > 0) {
-                                if (lineSpacing == 1) {
-                                    blankLines = commandCount;
+                    if (line.length() > 0) {
+                        if (line.charAt(1) == 'n') {
+                            String remainingCommand = line.substring(2);
+                            try {
+                                int commandCount = Integer.parseInt(remainingCommand);
+                                if (commandCount > 0) {
+                                    maxChars = commandCount;
                                 } else {
-                                    blankLines = commandCount - 1;
+                                    errors.add("Line " + lineCount + " error: Maximum line length must be greater than 0");
                                 }
-                                addBlankLines();
-                            } else {
-                                errors.add("Line " + lineCount + " error: Blank lines must be greater than 0");
-                            }
-                        } catch (NumberFormatException exception) {
-                            errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
-                        }
-                    } else if (line.charAt(1) == 'a') {
-                        String remainingCommand = line.substring(2);
-                        try {
-                            int commandCount = Integer.parseInt(remainingCommand);
-                            if (commandCount == 2 || commandCount == 1) {                               
-                                if (columns == 1 && commandCount == 2) {
-                                    startColumnIndex = countStartIndex + 1;
-                                    columns = commandCount;
-                                    lastMaxChars = maxChars;
-                                }
-                                if(columns == 2 & commandCount == 1) {
-                                    formatColumns(startColumnIndex);
-                                    columns = commandCount;
-                                    maxChars = lastMaxChars;
-                                }
-                            } else {
-                                errors.add("Line " + lineCount + " error: Invalid column count. Column count can be 1 or 2");
+                            } catch (NumberFormatException exception) {
+                                errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
                             }
 
-                        } catch (NumberFormatException exception) {
+                        } else if (line.charAt(1) == 'r') {
+                            justification = 'r';
+                        } else if (line.charAt(1) == 'l') {
+                            justification = 'l';
+                        } else if (line.charAt(1) == 'c') {
+                            justification = 'c';
+                        } else if (line.charAt(1) == 'e') {
+                            equalSpacing = true;
+
+                        } else if (line.charAt(1) == 'w') {
+                            if (line.length() > 2) {
+                                if (line.charAt(2) == '+') {
+                                    wrap = true;
+                                    if (countStartIndex > 0) {
+                                        replacementIndex = countStartIndex + 1;
+                                    } else {
+                                        replacementIndex = countStartIndex;
+                                    }
+                                } else if (line.charAt(2) == '-') {
+
+                                    formatWrap();
+                                    wrap = false;
+                                } else {
+                                    errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
+                                }
+                            } else {
+                                errors.add("Line " + lineCount + " error: Invalid command. Ignoring comand");
+                            }
+                        } else if (line.charAt(1) == 's') {
+                            if (lineSpacing == 2) {
+                                spaceEndIndex = countEndIndex;
+                                formatDoubleSpace(spaceStartIndex, spaceEndIndex);
+                            }
+                            lineSpacing = 1;
+                        } else if (line.charAt(1) == 'd') {
+                            spaceStartIndex = countStartIndex + 1;
+                            lineSpacing = 2;
+                        } else if (line.charAt(1) == 't') {
+                            title = true;
+                        } else if (line.charAt(1) == 'p') {
+                            String remainingCommand = line.substring(2);
+                            try {
+                                int commandCount = Integer.parseInt(remainingCommand);
+                                if (commandCount > 0) {
+                                    paragraphSpacing = commandCount;
+                                } else {
+                                    errors.add("Line " + lineCount + " error: Paragraph spacing must be greater than 0");
+                                }
+                            } catch (NumberFormatException exception) {
+                                errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
+                            }
+                        } else if (line.charAt(1) == 'b') {
+                            String remainingCommand = line.substring(2);
+                            try {
+                                int commandCount = Integer.parseInt(remainingCommand);
+                                if (commandCount > 0) {
+                                    if (lineSpacing == 1) {
+                                        blankLines = commandCount;
+                                    } else {
+                                        blankLines = commandCount - 1;
+                                    }
+                                    addBlankLines();
+                                } else {
+                                    errors.add("Line " + lineCount + " error: Blank lines must be greater than 0");
+                                }
+                            } catch (NumberFormatException exception) {
+                                errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
+                            }
+                        } else if (line.charAt(1) == 'a') {
+                            String remainingCommand = line.substring(2);
+                            try {
+                                int commandCount = Integer.parseInt(remainingCommand);
+                                if (commandCount == 2 || commandCount == 1) {
+                                    if (columns == 1 && commandCount == 2) {
+                                        if (countStartIndex > 0) {
+                                            startColumnIndex = countStartIndex + 1;
+                                        } else {
+                                            startColumnIndex = countStartIndex;
+                                        }
+                                        columns = commandCount;
+                                        lastMaxChars = maxChars;
+                                    }
+                                    if (columns == 2 & commandCount == 1) {
+                                        formatColumns(startColumnIndex);
+                                        columns = commandCount;
+                                        maxChars = lastMaxChars;
+                                    }
+                                } else {
+                                    errors.add("Line " + lineCount + " error: Invalid column count. Column count can be 1 or 2");
+                                }
+
+                            } catch (NumberFormatException exception) {
+                                errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
+
+                            }
+                        } else {
                             errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                         }
                     } else {
-                        errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
+                         errors.add("Line " + lineCount + " error: Invalid command. Ignoring command");
                     }
                 } else if (line.length() > 0) {
                     formatLine(line);
 
-                } 
+                }
                 line = readFile.readLine();
             }
             //make call to format wrap after control has fully exited formatLine(line)
@@ -726,7 +738,7 @@ public class LineFormatter extends ArrayList<String> {
             if (columns == 2) {
                 formatColumns(startColumnIndex);
             }
-            if(lineSpacing == 2) {
+            if (lineSpacing == 2) {
                 spaceEndIndex = formattedLines.size();
                 formatDoubleSpace(spaceStartIndex, spaceEndIndex);
             }
