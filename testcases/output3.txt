@@ -1,11 +1,8 @@
-                              Testing for RIGHT-JUTIFY and number one two three.
-                              ==================================================
-
-
-  Testing for RIGHT-JUTIFY with LONG LINE and number one two three four five six
-                                             seven eight nine ten eleven twelve.
-                              ==================================================
-
-
-                  Testing for RIGHT-JUTIFY with INDENT and number one two three.
-                              ==================================================
+                       Test1: Testing for RIGHT-JUTIFY and number one two three.
+                                                                              //
+                                                                              //
+    Test2: Testing for RIGHT-JUTIFY with LONG LINE and number one two three four
+                                    five six seven eight nine ten eleven twelve.
+                                                                              //
+                                                                              //
+           Test3: Testing for RIGHT-JUTIFY with INDENT and number one two three.

@@ -1,0 +1,4 @@
+Test1: Testing for DOUBLE-COLUMN
+and number one two three four five          sixteen seventeen eighteen nineteen
+six seven eight nine ten eleven          twenty twenty-one twenty-two
+twelve thirteen fourteen fifteen          twenty-three.

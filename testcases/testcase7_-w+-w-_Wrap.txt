@@ -1,0 +1,11 @@
+//
+-w+
+Test1: Testing WRAP ON and number one two 
+three four five six 
+seven eight nine ten eleven twelve.
+//
+//
+-w-
+LINE1: Test2: Testing WRAP OFF and number one two 
+LINE2: three four five six 
+LINE3: seven eight nine ten eleven twelve.
