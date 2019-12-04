@@ -1,4 +1,4 @@
-Test1: Testing for DOUBLE-COLUMN
-and number one two three four five          sixteen seventeen eighteen nineteen
-six seven eight nine ten eleven          twenty twenty-one twenty-two
-twelve thirteen fourteen fifteen          twenty-three.
+Test1: Testing for DOUBLE-COLUMN          sixteen seventeen eighteen nineteen
+and number one two three four five          twenty twenty-one twenty-two
+six seven eight nine ten eleven          twenty-three.
+twelve thirteen fourteen fifteen
