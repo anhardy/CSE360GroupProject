@@ -1,0 +1,19 @@
+
+
+
+LINE1: Test1: Testing for BLANK LINE(=3) and number one two three four five six
+seven eight nine.
+LINE2: Ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen
+nineteen.
+//
+//
+LINE1: Test2: Testing for INVALID/NEGATIVE BLANK LINE and number one two three
+four five six seven.
+LINE2: Eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen
+eighteen.
+//
+//
+LINE1: Test3: Testing for ZERO BLANK LINE and number one two three four five six
+seven.
+LINE2: Eight nine ten eleven twelve thirteen fourteen fifteen sixteen seventeen
+eighteen.
